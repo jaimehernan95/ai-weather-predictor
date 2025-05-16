@@ -1,0 +1,3 @@
+datetime,humidity,weather,temp
+2024-01-01 00:00:00,70,Rain,10
+2024-01-01 03:00:00,65,Clear,11
