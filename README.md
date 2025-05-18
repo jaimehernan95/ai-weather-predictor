@@ -78,3 +78,105 @@ Develop a user-friendly UI or frontend to interact with the API instead of manua
 Add proper error handling and validation to the API.
 Deploy the API to a cloud service for public access.
 Add historical data storage and analytics to improve predictions.
+
+
+installl to
+python -m pip install scikit-learn
+(base) owner1s-MacBook-Pro:ai-weather-predictor jaimehernan$ python scripts/train_model.py
+✅ Model trained and saved to app/model.joblib
+
+
+--
+
+# AI Weather Predictor
+
+Este proyecto es un predictor de temperatura basado en datos meteorológicos, construido con FastAPI y un modelo de regresión lineal usando scikit-learn.
+
+---
+
+## Qué hemos hecho hasta ahora
+
+- **Obtención de datos reales:**  
+  Usamos un script (`scripts/fetch_data.py`) para descargar datos actuales del clima desde la API de OpenWeatherMap. Los datos incluyen temperatura, humedad, y el estado del clima (e.g., Clear, Rain).
+
+- **Almacenamiento de datos:**  
+  Los datos se guardan en un archivo CSV (`data/weather.csv`), que se va actualizando con nuevos registros.
+
+- **Entrenamiento del modelo:**  
+  Utilizamos `scripts/train_model.py` para entrenar un modelo de regresión lineal que predice la temperatura basada en variables como humedad, día de la semana y lluvia.
+
+- **API con FastAPI:**  
+  Construimos una API para hacer predicciones usando el modelo entrenado. Puedes probar la API interactivamente a través de la interfaz Swagger disponible en `http://localhost:8000/docs`.
+
+- **Pruebas:**  
+  Incluimos tests básicos (`tests/test_predict.py`) que verifican el correcto funcionamiento del endpoint `/predict` con entradas válidas e inválidas.
+
+---
+
+## Librerías utilizadas
+
+- `pandas` para manejo y transformación de datos.
+- `requests` para llamar a APIs externas.
+- `scikit-learn` para el modelo de regresión lineal.
+- `fastapi` y `uvicorn` para construir y correr la API.
+- `python-dotenv` para cargar las variables de entorno (API key).
+- `joblib` para guardar y cargar el modelo entrenado.
+
+---
+
+## Opciones para mejorar el proyecto
+
+1. **Visualizar el desempeño del modelo:**  
+   Agregar gráficos con `matplotlib` o `seaborn` para comparar las predicciones del modelo con los valores reales, visualizar el error y entender mejor su rendimiento.
+
+2. **Retrain automático:**  
+   Automatizar el reentrenamiento del modelo cada vez que se agreguen nuevos datos al archivo CSV o base de datos para mantener el modelo actualizado.
+
+3. **Agregar más características:**  
+   Incorporar variables adicionales como presión atmosférica, velocidad y dirección del viento, temperatura mínima y máxima, etc., para mejorar la precisión de las predicciones.
+
+---
+
+## Cómo ejecutar el proyecto
+
+1. Clona el repositorio y crea un entorno virtual:
+
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # en Windows: venv\Scripts\activate
+
+2. Instala las dependencias:
+pip install -r requirements.txt
+3. Crea un archivo .env en la carpeta raíz con tu API key de OpenWeatherMap:
+WEATHER_API_KEY=tu_api_key_aqui
+
+4. Ejecuta el script para obtener datos reales:
+python scripts/fetch_data.py
+
+5. Entrena el modelo con los datos descargados:
+python scripts/train_model.py
+
+6. Ejecuta la API:
+uvicorn app.main:app --reload
+
+7. Accede a la documentación interactiva en:
+http://localhost:8000/docs
+
+8. borrar
+-rm rm -rf  /ai-weather-predictor/scripts/tests/
+rm -rf __pycache__ .pytest_cache
+find . -name "*.pyc" -delete
+
+9. jecuta las pruebas de nuevo
+
+Ejecuta las pruebas de nuevo:
+pytest
+/ai-weather-predictor/.pytest_cache
+
+10. script de limpieza: fix_test_env.sh
+Guarda esto como fix_test_env.sh en la raíz del proyecto (ai-weather-predictor/
+ejecuta
+chmod +x fix_test_env.sh
+./fix_test_env.sh
+
+kuego ejecuta: pytest

@@ -1,18 +1,41 @@
-# app/main.py
 from fastapi import FastAPI
+from pydantic import BaseModel
 import joblib
-import pandas as pd
-import os
+import numpy as np
 
-model = joblib.load(os.path.join(os.path.dirname(__file__), 'model.joblib'))
-app = FastAPI()
+# Create FastAPI app
+app = FastAPI(title="Weather Temperature Predictor")
+
+# Load the trained model
+# The model was saved in train_model.py using joblib
+model = joblib.load("app/model.joblib")
+
+# Define input data schema using Pydantic
+# This ensures input validation and generates docs automatically
+class WeatherInput(BaseModel):
+    humidity: float              # Humidity percentage (e.g., 60.5)
+    day_of_week: int             # Day of the week as a number: Monday = 0, Sunday = 6
+    is_rainy: int                # 1 if it's raining, 0 otherwise
 
 @app.get("/")
-def home():
-    return {"mensaje": "API de predicción del clima"}
+def read_root():
+    return {"message": "Welcome to the Weather Predictor API!"}
 
+# Define the prediction endpoint
 @app.post("/predict")
-def predict(humidity: float, day_of_week: int, is_rainy: int):
-    df = pd.DataFrame([[humidity, day_of_week, is_rainy]], columns=['humidity', 'day_of_week', 'is_rainy'])
-    prediction = model.predict(df)[0]
-    return {"predicted_temp": round(prediction, 2)}
+def predict_temperature(data: WeatherInput):
+    """
+    Predict the temperature based on humidity, day of the week, and weather condition.
+    """
+    # Prepare the input data for the model
+    # It must be in the same format and order as during training
+    features = np.array([[data.humidity, data.day_of_week, data.is_rainy]])
+
+    # Predict using the trained model
+    prediction = model.predict(features)[0]
+
+    # Return the prediction result
+    return {
+        "predicted_temperature": round(prediction, 2),
+        "inputs": data.dict()
+    }

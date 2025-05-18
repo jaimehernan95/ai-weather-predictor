@@ -25,3 +25,7 @@ def fetch_weather():
 
 if __name__ == "__main__":
     fetch_weather()
+# Add to fetch_data.py temporarily for quick testing
+for _ in range(10):  # simulate 10 data points
+    fetch_weather()
+    time.sleep(2)  # wait 2 seconds between fetches
